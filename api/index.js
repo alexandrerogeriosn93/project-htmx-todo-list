@@ -46,6 +46,25 @@ app.post("/todos", async (req, res) => {
   }
 });
 
+app.get("/todos", async (req, res) => {
+  try {
+    const tasks = await Todo.findAll();
+
+    if (tasks.length === 0) {
+      res.send("<p>Não há tarefas cadastradas!</p>");
+      return;
+    }
+
+    let html = tasks.map((task) => `<p>${task.text}</p>`).join("");
+
+    res.send(html);
+  } catch (error) {
+    res.send(
+      `<div class="alert alert-danger" role="alert">Erro ao buscar tarefa!</div>`
+    );
+  }
+});
+
 sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
