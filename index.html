@@ -45,6 +45,14 @@
             <button type="submit" class="btn btn-primary">Adicionar</button>
           </form>
           <div id="msg"></div>
+          <div
+            id="todo-list"
+            hx-get="http://localhost:3000/todos"
+            hx-trigger="load"
+            class="mt-4"
+          >
+            Carregando...
+          </div>
         </div>
       </div>
     </div>
