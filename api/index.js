@@ -89,6 +89,25 @@ app.get("/todos", async (req, res) => {
   }
 });
 
+app.delete("/todos/:id", async (req, res) => {
+  try {
+    const task = await Todo.findByPk(req.params.id);
+
+    if (task) {
+      await task.destroy();
+      res.send(
+        `<div class="alert alert-success" role="alert">Tarefa excluída com sucesso!</div>`
+      );
+    } else {
+      res.send("Tarefa não encontrada!");
+    }
+  } catch (error) {
+    res.send(
+      `<div class="alert alert-danger" role="alert">Erro ao deletar tarefa!</div>`
+    );
+  }
+});
+
 sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
