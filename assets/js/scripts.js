@@ -1,4 +1,9 @@
 document.body.addEventListener("htmx:afterRequest", function (event) {
+  if (event.target.getAttribute("id") === "edit-form") {
+    cancelEdit();
+    updateTaskList();
+  }
+
   if (event.target.getAttribute("id") === "todo-form") {
     resetForm();
     updateTaskList();

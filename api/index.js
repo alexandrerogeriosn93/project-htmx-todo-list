@@ -130,6 +130,36 @@ app.patch("/todos/:id", async (req, res) => {
   }
 });
 
+app.put("/todos", async (req, res) => {
+  const { id, text, dificulty } = req.body;
+
+  if (!text || !dificulty) {
+    res.send(
+      `<div class="alert alert-danger" role="alert">Texto e dificuldades são obrigatórios</div>`
+    );
+    return;
+  }
+
+  try {
+    const task = await Todo.findByPk(id);
+
+    if (task) {
+      await task.update({ text, dificulty });
+      res.send(
+        `<div class="alert alert-success" role="alert">A tarefa '${task.text}' foi atualizada!</div>`
+      );
+    } else {
+      res.send(
+        `<div class="alert alert-danger" role="alert">Tarefa não encontrada!</div>`
+      );
+    }
+  } catch (error) {
+    res.send(
+      `<div class="alert alert-danger" role="alert">Erro ao deletar tarefa!</div>`
+    );
+  }
+});
+
 sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
