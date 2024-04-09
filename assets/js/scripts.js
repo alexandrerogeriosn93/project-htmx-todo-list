@@ -19,3 +19,8 @@ function deleteTask(id) {
     updateTaskList();
   }
 }
+
+function toggleTask(id) {
+  htmx.ajax("PATCH", `http://localhost:3000/todos/${id}`, "#msg");
+  updateTaskList();
+}
