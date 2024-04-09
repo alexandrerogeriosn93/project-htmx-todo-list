@@ -19,6 +19,33 @@ const Todo = sequelize.define("Todo", {
   complete: DataTypes.BOOLEAN,
 });
 
+app.post("/todos", async (req, res) => {
+  const { text, dificulty } = req.body;
+
+  if (!text || !dificulty) {
+    res.send(
+      `<div class="alert alert-danger" role="alert">Texto e dificuldades são obrigatórios</div>`
+    );
+    return;
+  }
+
+  try {
+    const newTask = await Todo.create({
+      text,
+      dificulty,
+      complete: false,
+    });
+
+    res.send(
+      `<div class="alert alert-success" role="alert">Tarefa ${newTask.text} criada com sucesso!</div>`
+    );
+  } catch (error) {
+    res.send(
+      `<div class="alert alert-danger" role="alert">Erro ao criar tarefa!</div>`
+    );
+  }
+});
+
 sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server running on port: ${port}`);

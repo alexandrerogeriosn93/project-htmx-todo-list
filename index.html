@@ -20,7 +20,12 @@
       <div class="row justify-content-center">
         <div class="col-lg-8 mt-2">
           <h1 class="text-center mb-4">Gerenciador de tarfeas</h1>
-          <form class="mb-4" id="todo-form">
+          <form
+            class="mb-4"
+            id="todo-form"
+            hx-post="http://localhost:3000/todos"
+            hx-target="#msg"
+          >
             <div class="form-group">
               <input
                 type="text"
