@@ -44,6 +44,36 @@
             </div>
             <button type="submit" class="btn btn-primary">Adicionar</button>
           </form>
+          <form
+            class="mb-4 d-none"
+            id="edit-form"
+            hx-put="http://localhost:3000/todos/"
+            hx-target="#msg"
+          >
+            <input type="hidden" name="id" id="edit-id" />
+            <div class="form-group">
+              <input
+                type="text"
+                name="text"
+                id="edit-text"
+                class="form-control"
+                placeholder="Digite o texto"
+              />
+            </div>
+            <div class="form-group">
+              <select class="form-control" name="dificulty" id="edit-dificulty">
+                <option value="Fácil">Fácil</option>
+                <option value="Intermediária">Intermediária</option>
+                <option value="Difícil">Difícil</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-success">
+              Salvar alterações
+            </button>
+            <button class="btn btn-secondary" onclick="cancelEdit()">
+              Cancelar
+            </button>
+          </form>
           <div id="msg"></div>
           <div
             id="todo-list"
