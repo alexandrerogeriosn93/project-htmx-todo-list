@@ -59,10 +59,10 @@ app.get("/todos", async (req, res) => {
       .map(
         (task) =>
           `<div class="card mb-3 ${
-            task.completa ? "bg-light border-success" : ""
+            task.complete ? "bg-light border-success" : ""
           }">
         <div class="card-body ${task.complete ? "font-italic" : ""}">
-            <h5 class="card-title">task: ${task.text}</h5>
+            <h5 class="card-title">Tarefa: ${task.text}</h5>
             <p class="card-text">Dificuldade: ${task.dificulty}</p>
             <p class="card-text">Status: ${
               task.complete ? "Completa" : "Incompleta"
@@ -100,6 +100,58 @@ app.delete("/todos/:id", async (req, res) => {
       );
     } else {
       res.send("Tarefa não encontrada!");
+    }
+  } catch (error) {
+    res.send(
+      `<div class="alert alert-danger" role="alert">Erro ao deletar tarefa!</div>`
+    );
+  }
+});
+
+app.patch("/todos/:id", async (req, res) => {
+  try {
+    const task = await Todo.findByPk(req.params.id);
+
+    if (task) {
+      task.complete = !task.complete;
+      await task.save();
+      res.send(
+        `<div class="alert alert-success" role="alert">A tarefa '${
+          task.text
+        }' foi marcada como ${task.complete ? "completa" : "incompleta"}</div>`
+      );
+    } else {
+      res.send("Tarefa não encontrada!");
+    }
+  } catch (error) {
+    res.send(
+      `<div class="alert alert-danger" role="alert">Erro ao deletar tarefa!</div>`
+    );
+  }
+});
+
+app.put("/todos", async (req, res) => {
+  const { id, text, dificulty } = req.body;
+
+  if (!text || !dificulty) {
+    res.send(
+      `<div class="alert alert-danger" role="alert">Texto e dificuldades são obrigatórios</div>`
+    );
+    return;
+  }
+
+  try {
+    const task = await Todo.findByPk(id);
+
+    if (task) {
+      await task.update({ text, dificulty });
+      res.send(
+        `<div class="alert alert-success" role="alert">A tarefa '${task.text}' foi atualizada!</div>`
+      );
+    } else {
+      res.send(
+        `<div class="alert alert-danger" role="alert">Tarefa não encontrada!</div>`
+      );
     }
   } catch (error) {
     res.send(
